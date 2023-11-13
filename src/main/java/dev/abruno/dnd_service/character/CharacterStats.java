@@ -1,5 +1,7 @@
 package dev.abruno.dnd_service.character;
 
+import dev.abruno.dnd_service.character.util.StatHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +25,23 @@ public class CharacterStats {
     }
 
     CharacterStats(){
+        this.strength = 0;
+        this.dexterity = 0;
+        this.constitution = 0;
+        this.intelligence = 0;
+        this.wisdom = 0;
+        this.charisma = 0;
+        this.savingThrowsList = new ArrayList<>();
+        this.skillsList = new ArrayList<>();
+    }
+
+    public void randomize(){
         this.strength = StatHelper.generateRandomStat();
         this.dexterity = StatHelper.generateRandomStat();
         this.constitution = StatHelper.generateRandomStat();
         this.intelligence = StatHelper.generateRandomStat();
         this.wisdom = StatHelper.generateRandomStat();
         this.charisma = StatHelper.generateRandomStat();
-        this.savingThrowsList = new ArrayList<>();
-        this.skillsList = new ArrayList<>();
     }
 
     public int getModifier(StatHelper.Ability ability){
