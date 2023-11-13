@@ -1,2 +1,7 @@
-package dev.abruno.dnd_service.action;public class ActionController {
+package dev.abruno.dnd_service.action;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ActionController {
 }
