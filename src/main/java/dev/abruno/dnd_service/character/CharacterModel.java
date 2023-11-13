@@ -9,6 +9,7 @@ import dev.abruno.dnd_service.item.InventoryItem;
 import dev.abruno.dnd_service.action.Action;
 import dev.abruno.dnd_service.character.util.CharacterClass;
 import dev.abruno.dnd_service.character.util.Race;
+import dev.abruno.dnd_service.util.RandomEnumGenerator;
 
 public class CharacterModel {
     private int id, userId;
@@ -46,10 +47,6 @@ public class CharacterModel {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -58,115 +55,59 @@ public class CharacterModel {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public CharacterClass getCharacterClass() {
         return characterClass;
-    }
-
-    public void setCharacterClass(CharacterClass characterClass) {
-        this.characterClass = characterClass;
-    }
-
-    public Race getRace() {
-        return race;
-    }
-
-    public void setRace(Race race) {
-        this.race = race;
     }
 
     public String getBackground() {
         return background;
     }
 
-    public void setBackground(String background) {
-        this.background = background;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public CharacterStats getStats() {
         return stats;
     }
 
-    public void setStats(CharacterStats stats) {
-        this.stats = stats;
-    }
-
     @JsonProperty("armorClass")
     public int getArmorClass(){
-        return 10 + StatHelper.calculateModifier(this.stats.getDexterity());
+        return (this.stats.getDexterity() == 0) ? 0 : 10 + StatHelper.calculateModifier(this.stats.getDexterity());
     }
 
     public List<InventoryItem> getInventory() {
         return inventory;
     }
 
-    public void setInventory(List<InventoryItem> inventory) {
-        this.inventory = inventory;
-    }
-
     public List<Action> getAttacksAndSpells() {
         return attacksAndSpells;
     }
 
-    public void setAttacksAndSpells(List<Action> attacksAndSpells) {
-        this.attacksAndSpells = attacksAndSpells;
-    }
-
     @JsonProperty("hitDice")
     public int getHitDice() {
-        return this.characterClass.getHitDice();
+        return (this.characterClass != null) ? this.characterClass.getHitDice(): 0;
     }
 
     public int getMaxHitPoints() {
         return maxHitPoints;
     }
 
-    public void setMaxHitPoints(int maxHitPoints) {
-        this.maxHitPoints = maxHitPoints;
-    }
-
     public int getCurrentHitPoints() {
         return currentHitPoints;
     }
 
-    public void setCurrentHitPoints(int currentHitPoints) {
-        this.currentHitPoints = currentHitPoints;
-    }
-
-    @JsonProperty("speed")
+    @JsonProperty("baseSpeed")
     public int getSpeed() {
         return (this.race != null && homebrewSpeed == 0) ? this.race.getBaseSpeed() : homebrewSpeed;
-    }
-
-    public void setSpeed(int speed) {
-        this.homebrewSpeed = speed;
     }
 
     public int getExperiencePoints() {
         return experiencePoints;
     }
 
-    public void setExperiencePoints(int experiencePoints) {
-        this.experiencePoints = experiencePoints;
-    }
-
     public int getGold() {
         return gold;
-    }
-
-    public void setGold(int gold) {
-        this.gold = gold;
     }
 
     public CharacterDeathSaves getDeathSaves() {
@@ -225,6 +166,10 @@ public class CharacterModel {
             return this;
         }
 
+        public CharacterBuilder randomizeCharacterClass(){
+            return setCharacterClass((new RandomEnumGenerator<CharacterClass>(CharacterClass.class)).getRandomValue());
+        }
+
         public CharacterBuilder setHomebrewSpeed(int homebrewSpeed){
             this.homebrewSpeed = homebrewSpeed;
             return this;
@@ -233,6 +178,10 @@ public class CharacterModel {
         public CharacterBuilder setRace(Race race){
             this.race = race;
             return this;
+        }
+
+        public CharacterBuilder randomizeRace(){
+            return setRace((new RandomEnumGenerator<Race>(Race.class)).getRandomValue());
         }
 
         public CharacterBuilder setBackground(String background){

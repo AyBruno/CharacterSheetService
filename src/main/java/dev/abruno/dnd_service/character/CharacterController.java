@@ -15,10 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping(path="/characters")
 public class CharacterController {
-    private static RandomEnumGenerator randomClassGenerator = new RandomEnumGenerator(CharacterClass.class);
-    private static RandomEnumGenerator randomRaceGenerator = new RandomEnumGenerator(Race.class);
-    private static RandomEnumGenerator randomAbilityGenerator = new RandomEnumGenerator(StatHelper.Ability.class);
-    private static RandomEnumGenerator randomSkillGenerator = new RandomEnumGenerator(StatHelper.Skill.class);
 
     @GetMapping("{user_id}")
     public List<CharacterModel> getCharactersForUser(@PathVariable("user_id") int user_id){
@@ -30,8 +26,8 @@ public class CharacterController {
     @GetMapping("/random")
     public CharacterModel getRandomCharacter(){
         return new CharacterModel.CharacterBuilder(0, "Random Name")
-                .setCharacterClass((CharacterClass)randomClassGenerator.getRandomValue())
-                .setRace((Race)randomRaceGenerator.getRandomValue())
+                .randomizeRace()
+                .randomizeCharacterClass()
                 .randomizeStats()
                 .build();
     }
