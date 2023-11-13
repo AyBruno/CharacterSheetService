@@ -1,2 +1,4 @@
-package dev.abruno.dnd_service.Item;public record InventoryItem() {
+package dev.abruno.dnd_service.item;
+
+public record InventoryItem(int id, String name, String description) {
 }
