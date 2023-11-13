@@ -1,0 +1,19 @@
+app:
+  datasource:
+    main:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/DNDdb
+      username: dndService
+      password: Brumbo3
+      pool-size: 30
+
+server:
+  error:
+    include-message: always
+
+spring:
+  flyway:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/DNDdb
+    user: dndAdmin
+    password: Brumbo2
