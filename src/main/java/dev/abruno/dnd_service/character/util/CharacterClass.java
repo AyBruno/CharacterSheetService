@@ -3,8 +3,6 @@ package dev.abruno.dnd_service.character.util;
 import java.util.Arrays;
 import java.util.List;
 
-import dev.abruno.dnd_service.character.util.StatHelper.Ability;
-
 public enum CharacterClass{
     BARBARIAN(12, Arrays.asList(Ability.STR, Ability.CON)),
     BARD(8, Arrays.asList(Ability.DEX, Ability.CHA)),
@@ -21,7 +19,7 @@ public enum CharacterClass{
 
     private final int hitDice;
     private final List<Ability> savingThrows;
-    private CharacterClass(int hitDice, List<Ability> savingThrows){
+    CharacterClass(int hitDice, List<Ability> savingThrows){
         this.hitDice = hitDice;
         this.savingThrows = savingThrows;
     }
@@ -29,8 +27,8 @@ public enum CharacterClass{
     public int getHitDice(){
         return this.hitDice;
     }
-    public List<Ability> getSavingThrows() {
+
+    public List<Ability> getSavingThrowProficiencies() {
         return this.savingThrows;
     }
 }
-

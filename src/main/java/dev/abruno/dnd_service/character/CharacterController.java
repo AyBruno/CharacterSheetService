@@ -1,9 +1,5 @@
 package dev.abruno.dnd_service.character;
 
-import dev.abruno.dnd_service.character.util.CharacterClass;
-import dev.abruno.dnd_service.character.util.Race;
-import dev.abruno.dnd_service.character.util.StatHelper;
-import dev.abruno.dnd_service.util.RandomEnumGenerator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +15,7 @@ public class CharacterController {
     @GetMapping("{user_id}")
     public List<CharacterModel> getCharactersForUser(@PathVariable("user_id") int user_id){
         List<CharacterModel> characterList = new ArrayList<>();
-        characterList.add(new CharacterModel.CharacterBuilder(1, "Brumbo").build());
+        characterList.add(new CharacterModel.CharacterBuilder(user_id, "Brumbo").build());
         return characterList;
     }
 
