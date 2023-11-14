@@ -62,6 +62,10 @@ public class CharacterModel {
         return characterClass;
     }
 
+    public Race getRace(){
+        return race;
+    }
+
     public String getBackground() {
         return background;
     }
@@ -229,13 +233,23 @@ public class CharacterModel {
             return this;
         }
 
-        public CharacterBuilder setExperience(int experiencePoints){
+        public CharacterBuilder setExperiencePoints(int experiencePoints){
             this.experiencePoints = experiencePoints;
             return this;
         }
 
         public CharacterBuilder setInventory(List<InventoryItem> inventory){
             this.inventory = inventory;
+            return this;
+        }
+
+        public CharacterBuilder setMaxHitPoints(int maxHitPoints){
+            this.maxHitPoints = maxHitPoints;
+            return this;
+        }
+
+        public CharacterBuilder setCurrentHitPoints(int currentHitPoints){
+            this.currentHitPoints = currentHitPoints;
             return this;
         }
 
