@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.ArrayList;
 
-import dev.abruno.dnd_service.character.util.StatHelper;
+import dev.abruno.dnd_service.character.util.Ability;
+import dev.abruno.dnd_service.character.util.Skill;
 import dev.abruno.dnd_service.item.InventoryItem;
 import dev.abruno.dnd_service.action.Action;
 import dev.abruno.dnd_service.character.util.CharacterClass;
@@ -19,8 +20,8 @@ public class CharacterModel {
     private CharacterStats stats;
     private List<InventoryItem> inventory;
     private List<Action> attacksAndSpells;
-
-
+    private List<Ability> savingThrowProficiencies;
+    private List<Skill> skillProficiencies;
     private CharacterDeathSaves deathSaves;
     private int maxHitPoints, homebrewSpeed, currentHitPoints, experiencePoints, gold;
 
@@ -36,6 +37,8 @@ public class CharacterModel {
         this.stats = builder.stats;
         this.inventory = builder.inventory;
         this.attacksAndSpells = builder.attacksAndSpells;
+        this.savingThrowProficiencies = builder.savingThrowProficiencies;
+        this.skillProficiencies = builder.skillProficiencies;
         this.maxHitPoints = builder.maxHitPoints;
         this.currentHitPoints = builder.currentHitPoints;
         this.experiencePoints = builder.experiencePoints;
@@ -73,7 +76,7 @@ public class CharacterModel {
 
     @JsonProperty("armorClass")
     public int getArmorClass(){
-        return (this.stats.getDexterity() == 0) ? 0 : 10 + StatHelper.calculateModifier(this.stats.getDexterity());
+        return (this.stats.getDexterity() == 0) ? 0 : 10 + CharacterStats.calculateModifier(this.stats.getDexterity());
     }
 
     public List<InventoryItem> getInventory() {
@@ -82,6 +85,14 @@ public class CharacterModel {
 
     public List<Action> getAttacksAndSpells() {
         return attacksAndSpells;
+    }
+
+    public List<Ability> getSavingThrowProficiencies(){
+       return savingThrowProficiencies;
+    }
+
+    public List<Skill> getSkillProficiencies(){
+        return skillProficiencies;
     }
 
     @JsonProperty("hitDice")
@@ -124,6 +135,9 @@ public class CharacterModel {
         private List<InventoryItem> inventory;
         private List<Action> attacksAndSpells;
 
+        private List<Ability> savingThrowProficiencies;
+        private List<Skill> skillProficiencies;
+
         private CharacterDeathSaves deathSaves;
         private int maxHitPoints, currentHitPoints, homebrewSpeed, experiencePoints, gold;
 
@@ -161,9 +175,19 @@ public class CharacterModel {
             return this;
         };
 
+        public CharacterBuilder setSkillProficiencies(List<Skill> skillProficiencies) {
+            this.skillProficiencies = skillProficiencies;
+            return this;
+        }
+
+        public CharacterBuilder setSavingThrowProficiencies(List<Ability> savingThrowProficiencies){
+            this.savingThrowProficiencies = savingThrowProficiencies;
+            return this;
+        }
+
         public CharacterBuilder setCharacterClass(CharacterClass characterClass){
             this.characterClass = characterClass;
-            return this;
+            return setSavingThrowProficiencies(characterClass.getSavingThrowProficiencies());
         }
 
         public CharacterBuilder randomizeCharacterClass(){
