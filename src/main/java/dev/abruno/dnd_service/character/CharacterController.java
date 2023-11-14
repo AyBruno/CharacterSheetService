@@ -1,9 +1,7 @@
 package dev.abruno.dnd_service.character;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import dev.abruno.dnd_service.character.util.RandomNameGenerator;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,21 +9,35 @@ import java.util.List;
 @RestController
 @RequestMapping(path="/characters")
 public class CharacterController {
+    private final CharacterDataAccessService characterDao;
+    CharacterController(CharacterDataAccessService characterDao){
+        this.characterDao = characterDao;
+    }
 
-    @GetMapping("{user_id}")
-    public List<CharacterModel> getCharactersForUser(@PathVariable("user_id") int user_id){
-        List<CharacterModel> characterList = new ArrayList<>();
-        characterList.add(new CharacterModel.CharacterBuilder(user_id, "Brumbo").build());
+    @GetMapping("/")
+    public List<CharacterModel> getCharactersForUser(@RequestParam(required=true) int userId){
+        List<CharacterModel> characterList = characterDao.selectUserCharacters(userId);
         return characterList;
     }
 
     @GetMapping("/random")
-    public CharacterModel getRandomCharacter(){
-        return new CharacterModel.CharacterBuilder(0, "Random Name")
+    public CharacterModel getRandomCharacter(@RequestParam(required = false) Integer userId){
+        return new CharacterModel.CharacterBuilder((userId == null) ? 0 : userId, RandomNameGenerator.getRandomName())
                 .randomizeRace()
                 .randomizeCharacterClass()
                 .randomizeStats()
                 .build();
+    }
+
+    @PostMapping("/random")
+    public int addRandomCharacter(@RequestParam Integer userId){
+        CharacterModel randomCharacter = getRandomCharacter(userId);
+        return characterDao.insertCharacter(randomCharacter);
+    }
+
+    @DeleteMapping("/{character-id}")
+    public int deleteCharacter(@PathVariable("character-id") int characterId){
+        return characterDao.deleteCharacter(characterId);
     }
 
 }
